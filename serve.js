@@ -2,8 +2,10 @@ import Koa from 'koa'
 import Serve from 'koa-static'
 import cors from 'koa2-cors'
 import koaBody from 'koa-body'
-import Article from './routes/article'
 import Home from './routes/index'
+import Article from './routes/article'
+import Users from './routes/users'
+import Projects from './routes/projects'
 
 const app = new Koa()
 
@@ -13,6 +15,8 @@ app
   .use(koaBody())
   .use(Home.routes(), Home.allowedMethods())
   .use(Article.routes(), Article.allowedMethods())
+  .use(Users.routes(), Users.allowedMethods())
+  .use(Projects.routes(), Projects.allowedMethods())
 
 app.listen(3000, () => {
   console.log('app listen at 3000')

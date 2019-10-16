@@ -5,7 +5,7 @@ const router = new Router({
 })
 
 router.get('/', ctx => {
-  let url = 'http://' + ctx.request.headers.host + ctx.request.url
+  let url = 'http://' + ctx.request.headers.host + '/api'
   ctx.body = {
     Article: [
       {
@@ -37,6 +37,52 @@ router.get('/', ctx => {
         path: url + '/article/:id',
         type: 'del',
         example: url + '/article/328'
+      }
+    ],
+    Projects: [
+      {
+        desc: '获取项目列表',
+        path: url + '/projects',
+        type: 'get',
+        example: url + '/projects'
+      },
+      {
+        desc: '项目创建',
+        path: url + '/projects',
+        type: 'post',
+        example: url + '/projects'
+      },
+      {
+        desc: '项目更改',
+        path: url + '/projects/:id',
+        type: 'put',
+        example: url + '/projects/1'
+      },
+      {
+        desc: '项目删除',
+        path: url + '/projects/:id',
+        type: 'del',
+        example: url + '/projects/1'
+      }
+    ],
+    User: [
+      {
+        desc: '获取用户信息',
+        path: url + '/getUserInfo',
+        type: 'post',
+        example: url + '/getUserInfo'
+      },
+      {
+        desc: '注册',
+        path: url + '/user/resiger',
+        type: 'post',
+        example: url + '/user/resiger'
+      },
+      {
+        desc: '登录',
+        path: url + '/user/login',
+        type: 'post',
+        example: url + '/user/login'
       }
     ]
   }

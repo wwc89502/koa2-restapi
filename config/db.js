@@ -1,5 +1,7 @@
 import Sequelize from 'sequelize'
 
+const Op = Sequelize.Op
+
 const sequelize = new Sequelize('my_blog', 'root', 'hjf8023HG', {
   host: '47.96.138.122',
   operatorsAliases: false,
@@ -22,5 +24,6 @@ sequelize
   })
 
 export default {
-  sequelize
+  sequelize,
+  Op
 }

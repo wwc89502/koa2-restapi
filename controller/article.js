@@ -68,7 +68,7 @@ class articleModule {
     })
   }
 
-  static async createArticle ({post_content, post_title, post_status, comment_status, post_content_filtered}) {
+  static async create ({post_content, post_title, post_status, comment_status, post_content_filtered}) {
     return await article.create({
       post_date: await articleModule.getTime(),
       post_content,
@@ -82,7 +82,7 @@ class articleModule {
     })
   }
 
-  static async getArticle (ID) {
+  static async getDetail (ID) {
     return await article.findOne({
       where: {
         ID
@@ -90,7 +90,7 @@ class articleModule {
     })
   }
 
-  static async updateArticle (ID, {post_content, post_title, post_status, comment_status, post_content_filtered}) {
+  static async update (ID, {post_content, post_title, post_status, comment_status, post_content_filtered}) {
     return await article.update({
       post_content,
       post_title,
@@ -106,7 +106,7 @@ class articleModule {
     })
   }
 
-  static async delectArticle (ID) {
+  static async delect (ID) {
     return await article.destroy({
       where: {
         ID
@@ -137,9 +137,9 @@ export default class articleController {
     }
   }
 
-  static async getArticle (ctx) {
+  static async getDetail (ctx) {
     const params = ctx.params
-    const data = await articleModule.getArticle(Number(params.id))
+    const data = await articleModule.getDetail(Number(params.id))
 
     if (data) {
       ctx.body = {
@@ -154,7 +154,7 @@ export default class articleController {
     }
   }
 
-  static async createArticle (ctx) {
+  static async create (ctx) {
     const req = ctx.request.body
     let obj = {
       post_content: req.post_content || '',
@@ -163,8 +163,8 @@ export default class articleController {
       comment_status: req.comment_status || 'open',
       post_content_filtered: req.post_content_filtered || ''
     }
-    const res = await articleModule.createArticle(obj)
-    if (ctx) {
+    const res = await articleModule.create(obj)
+    if (res) {
       ctx.body = {
         status: 1,
         msg: '创建成功',
@@ -178,22 +178,22 @@ export default class articleController {
     }
   }
 
-  static async updateArticle (ctx) {
+  static async update (ctx) {
     const params = ctx.params
-    let data = await articleModule.getArticle(Number(params.id))
+    let data = await articleModule.getDetail(Number(params.id))
 
     if (data) {
       const req = ctx.request.body
 
       let obj = {
-        post_content: req.post_content || data.dataValues.post_content,
-        post_title: req.post_title || data.dataValues.post_title,
-        post_status: req.post_status || data.dataValues.post_status,
-        comment_status: req.comment_status || data.dataValues.comment_status,
-        post_content_filtered: req.post_content_filtered || data.dataValues.post_content_filtered
+        post_content: req.post_content || '',
+        post_title: req.post_title || '',
+        post_status: req.post_status || 'publish',
+        comment_status: req.comment_status || 'open',
+        post_content_filtered: req.post_content_filtered || ''
       }
 
-      const res = await articleModule.updateArticle(Number(params.id), obj)
+      const res = await articleModule.update(Number(params.id), obj)
 
       ctx.body = {
         status: 1,
@@ -207,12 +207,12 @@ export default class articleController {
     }
   }
 
-  static async delectArticle (ctx) {
+  static async delect (ctx) {
     const params = ctx.params
-    const data = await articleModule.getArticle(Number(params.id))
+    const data = await articleModule.getDetail(Number(params.id))
 
     if (data) {
-      const res = await articleModule.delectArticle(Number(params.id))
+      const res = await articleModule.delect(Number(params.id))
 
       ctx.body = {
         status: 1,
