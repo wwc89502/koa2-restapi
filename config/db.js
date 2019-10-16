@@ -1,34 +1,26 @@
-//文件名为mysqlDB.js
-var mysql = require('mysql')
+import Sequelize from 'sequelize'
 
-//建立连接的方法
+const sequelize = new Sequelize('my_blog', 'root', 'hjf8023HG', {
+  host: '47.96.138.122',
+  operatorsAliases: false,
+  timezone: 'Etc/GMT-8',  //东八时区
+  dialect: 'mariadb',
+  dialectOptions: {connectTimeout: 1000}, // mariadb 连接参数
+  define: {
+    timestamps: false
+  }
+})
 
-function __connection () {
-
-  var connection = mysql.createConnection({
-    host: '47.96.138.122',
-    user: 'root',
-    password: 'hjf8023HG',
-    database: 'db_blog'
+// 测试链接
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.')
   })
-  connection.connect()
-  return connection
-}
+  .catch(err => {
+    console.error('Unable to connect to the database:', err)
+  })
 
 export default {
-  query: (sql, parmas = null) => {
-    //1.获取数据库连接对象
-    var connection = __connection()
-    return new Promise(function (reject, resolve) {
-
-      //2执行sql语句
-      connection.query(sql, parmas, function (error, results, fields) {
-        if (error) throw error
-        reject(results)
-
-      })
-      //3关闭连接
-      connection.end()
-    })
-  }
+  sequelize
 }
