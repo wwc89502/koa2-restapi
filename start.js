@@ -4,4 +4,4 @@ require('babel-register') ({
     "transform-runtime"
   ]
 })
-module.exports = require('./serve.js')
+module.exports = require('./app.js')
