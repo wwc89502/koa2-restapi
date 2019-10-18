@@ -5,37 +5,36 @@ import koajwt from 'koa-jwt'
 import koaBody from 'koa-body'
 import Home from './routes/index'
 import Article from './routes/article'
+import ArticleCate from './routes/article_cate'
+import Picture from './routes/picture'
+import PictureCate from './routes/picture_cate'
 import Users from './routes/users'
 import Projects from './routes/projects'
 
 const app = new Koa()
 
+global.koajwtStr = '123koajwt456chen789'
+
 app
   .use(Serve(__dirname + '/', {extensions: ['html']}))
   .use(cors())
   .use(koaBody())
+  .use(koajwt({
+    secret: global.koajwtStr
+  }).unless({
+    path: [
+      /^\/api\/user\/resiger/,
+      /^\/api\/user\/login/,
+    ],
+    method: 'GET'
+  }))
   .use(Home.routes(), Home.allowedMethods())
   .use(Article.routes(), Article.allowedMethods())
+  .use(ArticleCate.routes(), ArticleCate.allowedMethods())
+  .use(Picture.routes(), Picture.allowedMethods())
+  .use(PictureCate.routes(), PictureCate.allowedMethods())
   .use(Users.routes(), Users.allowedMethods())
   .use(Projects.routes(), Projects.allowedMethods())
-  .use(async (ctx, next) => {
-    return next().catch((err) => {
-      if (err.status === 401) {
-        ctx.status = 401
-        ctx.body = {
-          status: '0',
-          desc: '登陆过期，请重新登陆'
-        }
-      } else {
-        throw err
-      }
-    })
-  })
-  .use(koajwt({
-    secret: '123456'
-  }).unless({
-    path: [/^\/user\/regist/, /^\/user\/login/]
-  }))
 
 app.listen(3000, () => {
   console.log('app listen at 3000')

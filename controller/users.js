@@ -13,39 +13,13 @@ const Op = DB.Op
 //引入jwt做token验证
 import jwt from 'jsonwebtoken'
 
-import tools from '../tools/index'
+import { verToken, getTime } from '../tools'
 
 //统一设置token有效时间
 const expireTime = '1h'
 
 //数据库操作类
 class usersModule {
-  static async getTime (time = new Date(), format = 'yyyy-MM-dd HH:mm:ss') {
-    let t = new Date(time)
-    let tf = function (i) {return (i < 10 ? '0' : '') + i}
-    return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function (a) {
-      switch (a) {
-        case 'yyyy':
-          return tf(t.getFullYear())
-          break
-        case 'MM':
-          return tf(t.getMonth() + 1)
-          break
-        case 'mm':
-          return tf(t.getMinutes())
-          break
-        case 'dd':
-          return tf(t.getDate())
-          break
-        case 'HH':
-          return tf(t.getHours())
-          break
-        case 'ss':
-          return tf(t.getSeconds())
-          break
-      }
-    })
-  }
 
   static async getUserInfo (account) { // 登录后查询用户信息-需验证token
     return await users.findOne({
@@ -70,7 +44,7 @@ class usersModule {
       email,
       account,
       password,
-      registered_time: await usersModule.getTime()
+      registered_time: getTime()
     })
   }
 }
@@ -78,41 +52,40 @@ class usersModule {
 export default class usersController {
   static async getUserInfo (ctx) {
     const req = ctx.request.body
-    const token = ctx.headers.token
+    const token = ctx.headers.authorization
 
     if (token) {
       try {
-        const result = await tools.verToken(token)
+        const result = await verToken(token)
 
         if (!req.account) {
           return ctx.body = {
-            status: '0',
-            desc: '参数错误'
+            status: 0,
+            msg: '参数错误'
           }
         } else {
           const data = await usersModule.getUserInfo(req.account)
 
           if (req.account == data.account) {
             return ctx.body = {
-              status: '1',
+              status: 1,
               userInfo: data,
-              desc: '获取用户信息成功'
+              msg: '获取用户信息成功'
             }
           }
         }
       } catch (error) {
-        console.log(error)
         ctx.status = 401
         return ctx.body = {
-          status: '0',
-          desc: '登陆过期，请重新登陆'
+          status: 0,
+          msg: error.message
         }
       }
     } else {
       ctx.status = 401
       return ctx.body = {
-        status: '0',
-        desc: '登陆过期，请重新登陆'
+        status: 0,
+        msg: '登陆过期，请重新登陆'
       }
     }
   }
@@ -126,8 +99,8 @@ export default class usersController {
         if (query) {
           ctx.response.status = 200
           ctx.body = {
-            code: -1,
-            desc: '用户已存在'
+            status: 0,
+            msg: '用户已存在'
           }
         } else {
           const param = {
@@ -140,8 +113,8 @@ export default class usersController {
 
           ctx.response.status = 200
           ctx.body = {
-            code: 0,
-            desc: '用户注册成功',
+            status: 1,
+            msg: '用户注册成功',
             userInfo: {
               account: req.account
             }
@@ -152,8 +125,8 @@ export default class usersController {
         console.log(error)
         ctx.response.status = 416
         ctx.body = {
-          code: -1,
-          desc: '参数不齐全'
+          status: 0,
+          msg: '参数不齐全'
         }
       }
     }
@@ -163,7 +136,7 @@ export default class usersController {
     const req = ctx.request.body
     if (!req.account || !req.password) {
       return ctx.body = {
-        status: '0',
+        status: 0,
         msg: '用户名或密码不能为空'
       }
     } else {
@@ -174,22 +147,22 @@ export default class usersController {
           const token = jwt.sign({
             user: req.account,
             password: req.password
-          }, '123456', {expiresIn: expireTime})
+          }, global.koajwtStr, {expiresIn: expireTime})
           return ctx.body = {
-            status: '1',
+            status: 1,
             token: token,
-            desc: '登陆成功'
+            msg: '登陆成功'
           }
         } else {
           return ctx.body = {
-            status: '0',
-            desc: '用户密码错误'
+            status: 0,
+            msg: '用户密码错误'
           }
         }
       } else {
         return ctx.body = {
-          status: '0',
-          desc: '该用户尚未注册'
+          status: 0,
+          msg: '该用户尚未注册'
         }
       }
     }

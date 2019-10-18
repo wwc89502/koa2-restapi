@@ -37,6 +37,98 @@ router.get('/', ctx => {
         path: url + '/article/:id',
         type: 'del',
         example: url + '/article/328'
+      },
+      {
+        desc: '获取文章分类',
+        path: url + '/article_cate',
+        type: 'get',
+        example: url + '/article_cate'
+      },
+      {
+        desc: '获取文章分类详情',
+        path: url + '/article_cate/:id',
+        type: 'get',
+        example: url + '/article_cate/328'
+      },
+      {
+        desc: '文章分类创建',
+        path: url + '/article_cate',
+        type: 'post',
+        example: url + '/article_cate'
+      },
+      {
+        desc: '文章分类更改',
+        path: url + '/article_cate/:id',
+        type: 'put',
+        example: url + '/article_cate/328'
+      },
+      {
+        desc: '文章分类删除',
+        path: url + '/article_cate/:id',
+        type: 'del',
+        example: url + '/article_cate/328'
+      }
+    ],
+    Picture: [
+      {
+        desc: '获取照片列表',
+        path: url + '/picture',
+        type: 'get',
+        example: url + '/picture'
+      },
+      {
+        desc: '获取照片详情',
+        path: url + '/picture/:id',
+        type: 'get',
+        example: url + '/picture/328'
+      },
+      {
+        desc: '照片创建',
+        path: url + '/picture',
+        type: 'post',
+        example: url + '/picture'
+      },
+      {
+        desc: '照片更改',
+        path: url + '/picture/:id',
+        type: 'put',
+        example: url + '/picture/328'
+      },
+      {
+        desc: '照片删除',
+        path: url + '/picture/:id',
+        type: 'del',
+        example: url + '/picture/328'
+      },
+      {
+        desc: '获取照片分类',
+        path: url + '/picture_cate',
+        type: 'get',
+        example: url + '/picture_cate'
+      },
+      {
+        desc: '获取照片详情',
+        path: url + '/picture_cate/:id',
+        type: 'get',
+        example: url + '/picture_cate/328'
+      },
+      {
+        desc: '照片分类创建',
+        path: url + '/picture_cate',
+        type: 'post',
+        example: url + '/picture_cate'
+      },
+      {
+        desc: '照片分类更改',
+        path: url + '/picture_cate/:id',
+        type: 'put',
+        example: url + '/picture_cate/328'
+      },
+      {
+        desc: '照片分类删除',
+        path: url + '/picture_cate/:id',
+        type: 'del',
+        example: url + '/picture_cate/328'
       }
     ],
     Projects: [

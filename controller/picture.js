@@ -4,19 +4,19 @@ import DB from '../config/db'
 const Sequelize = DB.sequelize
 
 //引入数据表模型
-const article = Sequelize.import('../module/article')
+const picture = Sequelize.import('../module/picture')
 //自动创建表
-article.sync({force: false})
+picture.sync({force: false})
 
 import { getTime } from '../tools'
 
 //数据库操作类
-class articleModule {
-  static async getTotal (post_status, cate_id) {
+class pictureModule {
+  static async getTotal (show_status, cate_id) {
     let obj = {}
-    if (post_status) {
+    if (show_status) {
       obj = {
-        post_status
+        show_status
       }
     }
     if (cate_id) {
@@ -25,17 +25,17 @@ class articleModule {
       })
     }
 
-    return await article.findAndCountAll({
+    return await picture.findAndCountAll({
       where: obj
     })
 
   }
 
-  static async getList (post_status, offset, limit, cate_id) {
+  static async getList (show_status, offset, limit, cate_id) {
     let obj = {}
-    if (post_status) {
+    if (show_status) {
       obj = {
-        post_status
+        show_status
       }
     }
     if (cate_id) {
@@ -43,7 +43,7 @@ class articleModule {
         cate_id
       })
     }
-    return await article.findAll({
+    return await picture.findAll({
       offset: offset,
       limit: limit,
       where: obj,
@@ -53,37 +53,39 @@ class articleModule {
     })
   }
 
-  static async create ({post_content, post_title, post_status, comment_status, post_content_filtered}) {
-    return await article.create({
-      post_date: getTime(),
-      post_content,
-      post_title,
-      post_status,
+  static async create ({cate_id, show_status, pic_title, pic_url, pic_content, comment_status}) {
+    return await picture.create({
+      created_date: getTime(),
+      pic_content,
+      pic_title,
+      show_status,
       comment_status,
-      post_name: encodeURIComponent(post_title),
-      post_modified: getTime(),
-      post_content_filtered,
+      pic_name: encodeURIComponent(pic_title),
+      modified_date: getTime(),
+      cate_id,
+      pic_url,
       comment_count: 0
     })
   }
 
   static async getDetail (ID) {
-    return await article.findOne({
+    return await picture.findOne({
       where: {
         ID
       }
     })
   }
 
-  static async update (ID, {post_content, post_title, post_status, comment_status, post_content_filtered}) {
-    return await article.update({
-      post_content,
-      post_title,
-      post_status,
+  static async update (ID, {cate_id, show_status, pic_title, pic_url, pic_content, comment_status}) {
+    return await picture.update({
+      pic_content,
+      pic_title,
+      show_status,
       comment_status,
-      post_name: encodeURIComponent(post_title),
-      post_modified: getTime(),
-      post_content_filtered
+      pic_name: encodeURIComponent(pic_title),
+      modified_date: getTime(),
+      cate_id,
+      pic_url,
     }, {
       where: {
         ID
@@ -92,7 +94,7 @@ class articleModule {
   }
 
   static async delect (ID) {
-    return await article.destroy({
+    return await picture.destroy({
       where: {
         ID
       }
@@ -100,19 +102,19 @@ class articleModule {
   }
 }
 
-export default class articleController {
+export default class pictureController {
   static async getList (ctx) {
-    const post_status = ctx.query.status // draft publish
+    const show_status = ctx.query.status
     const cate_id = ctx.query.cate_id || 0
 
     let currentPage = Number(ctx.query.page) || 1
     let num = Number(ctx.query.num) || 10
     let startPage = (currentPage - 1) * num
-    const total = (await articleModule.getTotal(post_status, cate_id))['count']
+    const total = (await pictureModule.getTotal(show_status, cate_id))['count']
 
     let totalPages = Math.ceil(total / num)
 
-    const data = await articleModule.getList(post_status, startPage, num, cate_id)
+    const data = await pictureModule.getList(show_status, startPage, num, cate_id)
 
     ctx.body = {
       totalPages: totalPages,
@@ -125,7 +127,7 @@ export default class articleController {
 
   static async getDetail (ctx) {
     const params = ctx.params
-    const data = await articleModule.getDetail(Number(params.id))
+    const data = await pictureModule.getDetail(Number(params.id))
 
     if (data) {
       ctx.body = {
@@ -135,7 +137,7 @@ export default class articleController {
     } else {
       ctx.body = {
         status: 0,
-        msg: '文章不存在'
+        msg: '图片不存在'
       }
     }
   }
@@ -143,13 +145,14 @@ export default class articleController {
   static async create (ctx) {
     const req = ctx.request.body
     let obj = {
-      post_content: req.post_content || '',
-      post_title: req.post_title || '',
-      post_status: req.post_status || 'publish',
-      comment_status: req.comment_status || 'open',
-      post_content_filtered: req.post_content_filtered || ''
+      cate_id: req.cate_id || 0,
+      pic_content: req.pic_content || '',
+      pic_title: req.pic_title || '',
+      pic_url: req.pic_url || '',
+      show_status: req.show_status || 1,
+      comment_status: req.comment_status || 'open'
     }
-    const res = await articleModule.create(obj)
+    const res = await pictureModule.create(obj)
     if (res) {
       ctx.body = {
         status: 1,
@@ -166,20 +169,21 @@ export default class articleController {
 
   static async update (ctx) {
     const params = ctx.params
-    let data = await articleModule.getDetail(Number(params.id))
+    let data = await pictureModule.getDetail(Number(params.id))
 
     if (data) {
       const req = ctx.request.body
 
       let obj = {
-        post_content: req.post_content || '',
-        post_title: req.post_title || '',
-        post_status: req.post_status || 'publish',
-        comment_status: req.comment_status || 'open',
-        post_content_filtered: req.post_content_filtered || ''
+        cate_id: req.cate_id || 0,
+        pic_content: req.pic_content || '',
+        pic_title: req.pic_title || '',
+        pic_url: req.pic_url || '',
+        show_status: req.show_status || 1,
+        comment_status: req.comment_status || 'open'
       }
 
-      const res = await articleModule.update(Number(params.id), obj)
+      const res = await pictureModule.update(Number(params.id), obj)
 
       ctx.body = {
         status: 1,
@@ -195,10 +199,10 @@ export default class articleController {
 
   static async delect (ctx) {
     const params = ctx.params
-    const data = await articleModule.getDetail(Number(params.id))
+    const data = await pictureModule.getDetail(Number(params.id))
 
     if (data) {
-      const res = await articleModule.delect(Number(params.id))
+      const res = await pictureModule.delect(Number(params.id))
 
       ctx.body = {
         status: 1,

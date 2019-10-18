@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
   return sequelize.define(
-    'dblog_posts',
+    'dblog_picture',
     {
       id: {
         type: DataTypes.BIGINT(20),
@@ -14,43 +14,43 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: false
       },
-      post_status: {
-        type: DataTypes.STRING(20),
+      show_status: {
+        type: DataTypes.BOOLEAN,
         primaryKey: false,
         allowNull: false,
         autoIncrement: false
       },
-      post_title: {
+      pic_title: {
         type: DataTypes.TEXT,
         primaryKey: false,
         allowNull: false,
         autoIncrement: false
       },
-      post_name: {
+      pic_name: {
         type: DataTypes.STRING(200),
         primaryKey: false,
         allowNull: false,
         autoIncrement: false
       },
-      post_date: {
+      pic_url: {
+        type: DataTypes.STRING(200),
+        primaryKey: false,
+        allowNull: false,
+        autoIncrement: false
+      },
+      created_date: {
         type: DataTypes.DATE,
         primaryKey: false,
         allowNull: false,
         autoIncrement: false
       },
-      post_modified: {
+      modified_date: {
         type: DataTypes.DATE,
         primaryKey: false,
         allowNull: false,
         autoIncrement: false
       },
-      post_content: {
-        type: DataTypes.TEXT('long'),
-        primaryKey: false,
-        allowNull: false,
-        autoIncrement: false
-      },
-      post_content_filtered: {
+      pic_content: {
         type: DataTypes.TEXT('long'),
         primaryKey: false,
         allowNull: false,

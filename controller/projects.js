@@ -8,35 +8,10 @@ const projects = Sequelize.import('../module/projects')
 //自动创建表
 projects.sync({force: false})
 
+import { getTime } from '../tools'
+
 //数据库操作类
 class projectsModule {
-  static async getTime (time = new Date(), format = 'yyyy-MM-dd HH:mm:ss') {
-    let t = new Date(time)
-    let tf = function (i) {return (i < 10 ? '0' : '') + i}
-    return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function (a) {
-      switch (a) {
-        case 'yyyy':
-          return tf(t.getFullYear())
-          break
-        case 'MM':
-          return tf(t.getMonth() + 1)
-          break
-        case 'mm':
-          return tf(t.getMinutes())
-          break
-        case 'dd':
-          return tf(t.getDate())
-          break
-        case 'HH':
-          return tf(t.getHours())
-          break
-        case 'ss':
-          return tf(t.getSeconds())
-          break
-      }
-    })
-  }
-
   static async getList () {
     return await projects.findAll({
       order: [
@@ -106,7 +81,7 @@ export default class projectsController {
       technology: req.technology || '',
       viewAddress: req.viewAddress || '',
       codeAddress: req.codeAddress || '',
-      complete_time: req.complete_time || await projectsModule.getTime(),
+      complete_time: req.complete_time || getTime(),
       isShow: req.isShow || 1,
     }
     const res = await projectsModule.create(obj)
@@ -135,7 +110,7 @@ export default class projectsController {
       technology: req.technology || '',
       viewAddress: req.viewAddress || '',
       codeAddress: req.codeAddress || '',
-      complete_time: req.complete_time || await projectsModule.getTime(),
+      complete_time: req.complete_time || getTime(),
       isShow: req.isShow || 1,
     }
 
