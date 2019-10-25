@@ -10,21 +10,30 @@ import Picture from './routes/picture'
 import PictureCate from './routes/picture_cate'
 import Users from './routes/users'
 import Projects from './routes/projects'
+import Upload from './routes/upload'
 
 const app = new Koa()
 
 global.koajwtStr = '123koajwt456chen789'
+global.appPath = __dirname
 
 app
-  .use(Serve(__dirname + '/', {extensions: ['html']}))
   .use(cors())
-  .use(koaBody())
+  .use(Serve(__dirname + '/', {extensions: ['html']}))
+  .use(koaBody({
+    multipart: true,
+    formidable: {
+      maxFileSize: 200 * 1024 * 1024    // 设置上传文件大小最大限制，默认2M
+    }
+  }))
   .use(koajwt({
     secret: global.koajwtStr
   }).unless({
     path: [
       /^\/api\/user\/resiger/,
       /^\/api\/user\/login/,
+      /^\/api\/uploadfile/,
+      /^\/api\/uploadfiles/,
     ],
     method: 'GET'
   }))
@@ -35,7 +44,8 @@ app
   .use(PictureCate.routes(), PictureCate.allowedMethods())
   .use(Users.routes(), Users.allowedMethods())
   .use(Projects.routes(), Projects.allowedMethods())
+  .use(Upload.routes(), Upload.allowedMethods())
 
-app.listen(3000, () => {
-  console.log('app listen at 3000')
+app.listen(80, () => {
+  console.log('app listen at 80')
 })

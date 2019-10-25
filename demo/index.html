@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>demo</title>
+</head>
+<body>
+<input type="file" multiple name="file" id="file">
+<button id="btn">上传</button>
+<script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
+<script src="https://cdn.bootcss.com/babel-polyfill/7.6.0/polyfill.min.js"></script>
+<script src="https://cdn.bootcss.com/axios/0.19.0/axios.js"></script>
+<script type="text/babel">
+  axios.defaults.baseURL = 'http://127.0.0.1/api'
+
+  // 获取文章
+  /*axios.get('/article')
+    .then(res => {
+      console.log(res.data)
+    })*/
+
+  // 单文件
+  document.querySelector('#file').addEventListener('change', (e) => {
+      var formData = new FormData()
+      var configs = {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }
+      var file = e.target.files[0]
+      formData.append('file', file, file.name)
+
+      axios.post('/uploadfile', formData, configs)
+        .then(res => {
+          console.log(res.data)
+        })
+    }
+  )
+
+  // 多文件
+  /*document.querySelector('#file').addEventListener('change', (e) => {
+      var formData = new FormData()
+      var configs = {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }
+      var files = e.target.files
+      formData.append('file', files)
+
+      axios.post('/uploadfiles', formData, configs)
+        .then(res => {
+          console.log(res.data)
+        })
+    }
+  )*/
+
+</script>
+</body>
+</html>
