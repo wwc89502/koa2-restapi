@@ -8,10 +8,13 @@ const router = new Router({
 //用户注册
 router.post('/resiger', usersController.resiger)
 
-//密码登陆
+//用户登录
 router.post('/login', usersController.login)
 
 //获取用户信息
 router.post('/getUserInfo', usersController.getUserInfo)
+
+//检测登录状态
+router.post('/checkLogin', usersController.checkLogin)
 
 export default router

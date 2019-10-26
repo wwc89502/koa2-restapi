@@ -32,8 +32,7 @@ app
     path: [
       /^\/api\/user\/resiger/,
       /^\/api\/user\/login/,
-      /^\/api\/uploadfile/,
-      /^\/api\/uploadfiles/,
+      /^\/api\/user\/checkLogin/
     ],
     method: 'GET'
   }))

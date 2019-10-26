@@ -17,7 +17,7 @@ import jwt from 'jsonwebtoken'
 import { verToken, getTime } from '../tools'
 
 //统一设置token有效时间
-const expireTime = '1h'
+const expireTime = '24h'
 
 //数据库操作类
 class usersModule {
@@ -51,6 +51,21 @@ class usersModule {
 }
 
 export default class usersController {
+  static async checkLogin (ctx) {
+    const token = ctx.headers.authorization
+
+    try {
+      const result = await verToken(token)
+      return ctx.body = result
+    } catch (error) {
+      return ctx.body = {
+        status: 0,
+        msg: error.message
+      }
+    }
+
+  }
+
   static async getUserInfo (ctx) {
     const req = ctx.request.body
     const token = ctx.headers.authorization
@@ -86,7 +101,7 @@ export default class usersController {
       ctx.status = 401
       return ctx.body = {
         status: 0,
-        msg: '登陆过期，请重新登陆'
+        msg: '登录过期，请重新登陆'
       }
     }
   }
@@ -155,7 +170,7 @@ export default class usersController {
           return ctx.body = {
             status: 1,
             token: token,
-            msg: '登陆成功'
+            msg: '登录成功'
           }
         } else {
           return ctx.body = {
