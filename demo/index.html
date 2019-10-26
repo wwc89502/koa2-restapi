@@ -5,7 +5,8 @@
   <title>demo</title>
 </head>
 <body>
-<input type="file" multiple name="file" id="file">
+<!--<input type="file" multiple name="file" id="file">-->
+<input type="file" name="file" id="file">
 <button id="btn">上传</button>
 <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
 <script src="https://cdn.bootcss.com/babel-polyfill/7.6.0/polyfill.min.js"></script>
@@ -26,7 +27,7 @@
         headers: {'Content-Type': 'multipart/form-data'}
       }
       var file = e.target.files[0]
-      formData.append('file', file, file.name)
+      formData.append('file', file)
 
       axios.post('/uploadfile', formData, configs)
         .then(res => {
@@ -42,7 +43,11 @@
         headers: {'Content-Type': 'multipart/form-data'}
       }
       var files = e.target.files
-      formData.append('file', files)
+
+      formData.append('fileType', 0)
+      for (var i = 0; i < files.length; i++) {
+        formData.append('multipartFiles', files[i])
+      }
 
       axios.post('/uploadfiles', formData, configs)
         .then(res => {

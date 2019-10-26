@@ -1,4 +1,3 @@
-// import { getTime } from '../tools'
 import fs from 'fs'
 import path from 'path'
 import { getTime } from '../tools'
@@ -24,7 +23,7 @@ export default class uploadController {
     // 扩展名
     let extname = path.extname(file.name)
 
-    let basePath = global.appPath + '/Upload'
+    let basePath = '/Upload'
 
     let isImg = false
 
@@ -46,7 +45,7 @@ export default class uploadController {
 
     mkdirsSync(basePath)
     // 创建可写流
-    const upStream = fs.createWriteStream(filePath)
+    const upStream = fs.createWriteStream(global.appPath + filePath)
     // 可读流通过管道写入可写流
     reader.pipe(upStream)
     ctx.body = {
@@ -68,14 +67,17 @@ export default class uploadController {
     }
 
     const files = ctx.request.files // 获取上传文件
-    for (let file of files) {
+
+    let filesPath = []
+
+    for (let file of files.multipartFiles) {
       // 创建可读流
       const reader = fs.createReadStream(file.path)
 
       // 扩展名
       let extname = path.extname(file.name)
 
-      let basePath = global.appPath + '/Upload'
+      let basePath = '/Upload'
 
       let isImg = false
 
@@ -95,15 +97,17 @@ export default class uploadController {
 
       let filePath = basePath + '/' + getTime(new Date(), 'yyyyMMddHHmmss') + '_' + random + extname
 
+      filesPath.push(filePath)
+
       mkdirsSync(basePath)
       // 创建可写流
-      const upStream = fs.createWriteStream(filePath)
+      const upStream = fs.createWriteStream(global.appPath + filePath)
       // 可读流通过管道写入可写流
       reader.pipe(upStream)
     }
     ctx.body = {
       msg: '上传成功',
-      files
+      filesPath
     }
   }
 }
