@@ -1,9 +1,37 @@
 import fs from 'fs'
 import path from 'path'
+
+import DB from '../config/db'
+
+//引入sequelize对象
+const Sequelize = DB.sequelize
+
+//引入数据表模型
+const upload = Sequelize.import('../module/upload')
+//自动创建表
+upload.sync({force: false})
+
 import { getTime } from '../tools'
 
-export default class uploadController {
+class uploadModule {
+  static async create ({url, cate}) {
+    return await upload.create({
+      created_date: getTime(),
+      url,
+      cate
+    })
+  }
 
+  static async getUrl (ID) {
+    return await upload.findOne({
+      where: {
+        ID
+      }
+    })
+  }
+}
+
+export default class uploadController {
   static async uploadfile (ctx) {
     function mkdirsSync (dirname) {
       if (fs.existsSync(dirname)) {
@@ -48,9 +76,25 @@ export default class uploadController {
     const upStream = fs.createWriteStream(global.appPath + filePath)
     // 可读流通过管道写入可写流
     reader.pipe(upStream)
-    ctx.body = {
-      msg: '上传成功',
-      filePath
+
+    let obj = {
+      url: filePath,
+      cate: isImg ? 'img' : 'file'
+    }
+
+    const res = await uploadModule.create(obj)
+
+    if (res) {
+      ctx.body = {
+        status: 1,
+        msg: '上传成功',
+        data: res
+      }
+    } else {
+      ctx.body = {
+        status: 0,
+        msg: '上传失败'
+      }
     }
   }
 
@@ -105,9 +149,27 @@ export default class uploadController {
       // 可读流通过管道写入可写流
       reader.pipe(upStream)
     }
-    ctx.body = {
-      msg: '上传成功',
-      filesPath
+
+    let obj = {
+      url: filesPath.join(','),
+      cate: 'multipartFiles'
+    }
+
+    const res = await uploadModule.create(obj)
+
+    if (res) {
+      res.url = res.url.split(',')
+
+      ctx.body = {
+        status: 1,
+        msg: '上传成功',
+        data: res
+      }
+    } else {
+      ctx.body = {
+        status: 0,
+        msg: '上传失败'
+      }
     }
   }
 }
