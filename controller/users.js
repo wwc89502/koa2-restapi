@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs'
 import DB from '../config/db'
 
 //引入sequelize对象
@@ -103,8 +104,9 @@ export default class usersController {
             msg: '用户已存在'
           }
         } else {
+          const hash = bcrypt.hashSync(req.password, 10)
           const param = {
-            password: req.password,
+            password: hash,
             email: req.email,
             account: req.account,
             nicename: req.account
@@ -141,8 +143,10 @@ export default class usersController {
       }
     } else {
       const data = await usersModule.getUserPwd(req.account)
+
+
       if (data) {
-        if (data.password === req.password) {
+        if (bcrypt.compareSync(req.password, data.password)) {
           //生成token，验证登录有效期
           const token = jwt.sign({
             user: req.account,
