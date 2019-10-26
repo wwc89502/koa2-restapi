@@ -23,7 +23,6 @@ class articleCateModule {
   static async create ({cate_title}) {
     return await articleCate.create({
       cate_title,
-      cate_name: encodeURIComponent(cate_title),
       created_date: getTime(),
       modified_date: getTime(),
     })
@@ -40,8 +39,7 @@ class articleCateModule {
   static async update (cate_id, {cate_title}) {
     return await articleCate.update({
       cate_title,
-      cate_name: encodeURIComponent(cate_title),
-      post_modified: getTime()
+      modified_date: getTime()
     }, {
       where: {
         cate_id

@@ -48,7 +48,7 @@ class pictureModule {
       limit: limit,
       where: obj,
       order: [
-        ['ID', 'DESC']
+        ['id', 'DESC']
       ]
     })
   }
@@ -60,7 +60,6 @@ class pictureModule {
       pic_title,
       show_status,
       comment_status,
-      pic_name: encodeURIComponent(pic_title),
       modified_date: getTime(),
       cate_id,
       upload_id,
@@ -68,35 +67,34 @@ class pictureModule {
     })
   }
 
-  static async getDetail (ID) {
+  static async getDetail (id) {
     return await picture.findOne({
       where: {
-        ID
+        id
       }
     })
   }
 
-  static async update (ID, {cate_id, show_status, pic_title, upload_id, pic_content, comment_status}) {
+  static async update (id, {cate_id, show_status, pic_title, upload_id, pic_content, comment_status}) {
     return await picture.update({
       pic_content,
       pic_title,
       show_status,
       comment_status,
-      pic_name: encodeURIComponent(pic_title),
       modified_date: getTime(),
       cate_id,
       upload_id,
     }, {
       where: {
-        ID
+        id
       }
     })
   }
 
-  static async delect (ID) {
+  static async delect (id) {
     return await picture.destroy({
       where: {
-        ID
+        id
       }
     })
   }

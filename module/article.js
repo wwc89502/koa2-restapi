@@ -26,31 +26,19 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: false
       },
-      post_name: {
-        type: DataTypes.STRING(200),
-        primaryKey: false,
-        allowNull: false,
-        autoIncrement: false
-      },
-      post_date: {
+      created_date: {
         type: DataTypes.DATE,
         primaryKey: false,
         allowNull: false,
         autoIncrement: false
       },
-      post_modified: {
+      modified_date: {
         type: DataTypes.DATE,
         primaryKey: false,
         allowNull: false,
         autoIncrement: false
       },
       post_content: {
-        type: DataTypes.TEXT('long'),
-        primaryKey: false,
-        allowNull: false,
-        autoIncrement: false
-      },
-      post_content_filtered: {
         type: DataTypes.TEXT('long'),
         primaryKey: false,
         allowNull: false,

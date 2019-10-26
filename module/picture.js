@@ -26,12 +26,6 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: false
       },
-      pic_name: {
-        type: DataTypes.STRING(200),
-        primaryKey: false,
-        allowNull: false,
-        autoIncrement: false
-      },
       upload_id: {
         type: DataTypes.STRING(20),
         primaryKey: false,

@@ -23,7 +23,6 @@ class pictureCateModule {
   static async create ({cate_title}) {
     return await pictureCate.create({
       cate_title,
-      cate_name: encodeURIComponent(cate_title),
       created_date: getTime(),
       modified_date: getTime(),
     })
@@ -40,7 +39,6 @@ class pictureCateModule {
   static async update (cate_id, {cate_title}) {
     return await pictureCate.update({
       cate_title,
-      cate_name: encodeURIComponent(cate_title),
       post_modified: getTime()
     }, {
       where: {

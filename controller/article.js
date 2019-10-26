@@ -48,53 +48,51 @@ class articleModule {
       limit: limit,
       where: obj,
       order: [
-        ['ID', 'DESC']
+        ['id', 'DESC']
       ]
     })
   }
 
-  static async create ({post_content, post_title, post_status, comment_status, post_content_filtered}) {
+  static async create ({cate_id, post_content, post_title, post_status, comment_status}) {
     return await article.create({
-      post_date: getTime(),
+      created_date: getTime(),
       post_content,
       post_title,
       post_status,
       comment_status,
-      post_name: encodeURIComponent(post_title),
-      post_modified: getTime(),
-      post_content_filtered,
+      cate_id,
+      modified_date: getTime(),
       comment_count: 0
     })
   }
 
-  static async getDetail (ID) {
+  static async getDetail (id) {
     return await article.findOne({
       where: {
-        ID
+        id
       }
     })
   }
 
-  static async update (ID, {post_content, post_title, post_status, comment_status, post_content_filtered}) {
+  static async update (id, {cate_id, post_content, post_title, post_status, comment_status}) {
     return await article.update({
       post_content,
       post_title,
       post_status,
       comment_status,
-      post_name: encodeURIComponent(post_title),
-      post_modified: getTime(),
-      post_content_filtered
+      cate_id,
+      modified_date: getTime(),
     }, {
       where: {
-        ID
+        id
       }
     })
   }
 
-  static async delect (ID) {
+  static async delect (id) {
     return await article.destroy({
       where: {
-        ID
+        id
       }
     })
   }
@@ -143,11 +141,11 @@ export default class articleController {
   static async create (ctx) {
     const req = ctx.request.body
     let obj = {
+      cate_id: req.cate_id || 0,
       post_content: req.post_content || '',
       post_title: req.post_title || '',
       post_status: req.post_status || 'publish',
       comment_status: req.comment_status || 'open',
-      post_content_filtered: req.post_content_filtered || ''
     }
     const res = await articleModule.create(obj)
     if (res) {
@@ -172,11 +170,11 @@ export default class articleController {
       const req = ctx.request.body
 
       let obj = {
+        cate_id: req.cate_id || 0,
         post_content: req.post_content || '',
         post_title: req.post_title || '',
         post_status: req.post_status || 'publish',
         comment_status: req.comment_status || 'open',
-        post_content_filtered: req.post_content_filtered || ''
       }
 
       const res = await articleModule.update(Number(params.id), obj)
