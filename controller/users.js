@@ -51,21 +51,6 @@ class usersModule {
 }
 
 export default class usersController {
-  static async checkLogin (ctx) {
-    const token = ctx.headers.authorization
-
-    try {
-      const result = await verToken(token)
-      return ctx.body = result
-    } catch (error) {
-      return ctx.body = {
-        status: 0,
-        msg: error.message
-      }
-    }
-
-  }
-
   static async getUserInfo (ctx) {
     const token = ctx.headers.authorization
 

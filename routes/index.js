@@ -160,12 +160,6 @@ router.get('/', ctx => {
     ],
     User: [
       {
-        desc: '检查是否登录',
-        path: url + '/checkLogin',
-        type: 'post',
-        example: url + '/checkLogin'
-      },
-      {
         desc: '获取用户信息',
         path: url + '/getUserInfo',
         type: 'post',
