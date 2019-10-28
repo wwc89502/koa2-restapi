@@ -1,4 +1,5 @@
 import Router from 'koa-router'
+import { getTime } from '../tools'
 
 const router = new Router({
   prefix: '/api'
@@ -159,22 +160,54 @@ router.get('/', ctx => {
     ],
     User: [
       {
+        desc: '检查是否登录',
+        path: url + '/checkLogin',
+        type: 'post',
+        example: url + '/checkLogin'
+      },
+      {
         desc: '获取用户信息',
         path: url + '/getUserInfo',
         type: 'post',
-        example: url + '/getUserInfo'
+        example: url + '/getUserInfo',
+        params: {
+          account: '账号 || 邮箱'
+        }
       },
       {
         desc: '注册',
         path: url + '/user/resiger',
         type: 'post',
-        example: url + '/user/resiger'
+        example: url + '/user/resiger',
+        params: {
+          password: '密码',
+          email: '邮箱',
+          account: '账号'
+        }
       },
       {
         desc: '登录',
         path: url + '/user/login',
         type: 'post',
-        example: url + '/user/login'
+        example: url + '/user/login',
+        params: {
+          password: '密码',
+          account: '账号 || 邮箱'
+        }
+      }
+    ],
+    Upload: [
+      {
+        desc: '上传单个文件',
+        path: url + '/uploadfile',
+        type: 'post',
+        example: url + '/uploadfile'
+      },
+      {
+        desc: '上传多个文件',
+        path: url + '/uploadfiles',
+        type: 'post',
+        example: url + '/uploadfiles'
       }
     ]
   }

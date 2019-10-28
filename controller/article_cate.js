@@ -113,7 +113,7 @@ export default class articleCateController {
         cate_title: req.cate_title || ''
       }
 
-      const res = await articleModule.update(Number(params.id), obj)
+      const res = await articleCateModule.update(Number(params.id), obj)
 
       ctx.body = {
         status: 1,
@@ -129,10 +129,10 @@ export default class articleCateController {
 
   static async delect (ctx) {
     const params = ctx.params
-    const data = await articleModule.getDetail(Number(params.id))
+    const data = await articleCateModule.getDetail(Number(params.id))
 
     if (data) {
-      const res = await articleModule.delect(Number(params.id))
+      const res = await articleCateModule.delect(Number(params.id))
 
       ctx.body = {
         status: 1,
