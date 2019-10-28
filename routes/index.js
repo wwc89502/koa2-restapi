@@ -169,10 +169,7 @@ router.get('/', ctx => {
         desc: '获取用户信息',
         path: url + '/getUserInfo',
         type: 'post',
-        example: url + '/getUserInfo',
-        params: {
-          account: '账号 || 邮箱'
-        }
+        example: url + '/getUserInfo'
       },
       {
         desc: '注册',
