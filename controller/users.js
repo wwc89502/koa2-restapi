@@ -22,28 +22,28 @@ const expireTime = '24h'
 //数据库操作类
 class usersModule {
 
-  static async getUserInfo (account) { // 登录后查询用户信息-需验证token
+  static async getUserInfo (username) { // 登录后查询用户信息-需验证token
     return await users.findOne({
       where: {
-        [Op.or]: [{account: account}, {email: account}]
+        [Op.or]: [{username: username}, {email: username}]
       },
       attributes: {exclude: ['password']}
     })
   }
 
-  static async getUserPwd (account) { // 仅后台使用不开放
+  static async getUserPwd (username) { // 仅后台使用不开放
     return await users.findOne({
       where: {
-        [Op.or]: [{account: account}, {email: account}]
+        [Op.or]: [{username: username}, {email: username}]
       }
     })
   }
 
-  static async resiger ({nicename, email, account, password}) {
+  static async resiger ({nicename, email, username, password}) {
     return await users.create({
       nicename,
       email,
-      account,
+      username,
       password,
       registered_time: getTime()
     })
@@ -74,9 +74,9 @@ export default class usersController {
   static async resiger (ctx) {
     const req = ctx.request.body
 
-    if (req.account && req.email && req.password) {
+    if (req.username && req.email && req.password) {
       try {
-        const query = await usersModule.getUserPwd(req.account)
+        const query = await usersModule.getUserPwd(req.username)
         if (query) {
           ctx.response.status = 200
           ctx.body = {
@@ -88,8 +88,8 @@ export default class usersController {
           const param = {
             password: hash,
             email: req.email,
-            account: req.account,
-            nicename: req.account
+            username: req.username,
+            nicename: req.username
           }
           const data = await usersModule.resiger(param)
 
@@ -98,7 +98,7 @@ export default class usersController {
             status: 1,
             msg: '用户注册成功',
             userInfo: {
-              account: req.account
+              username: req.username
             }
           }
         }
@@ -116,19 +116,19 @@ export default class usersController {
 
   static async login (ctx) {
     const req = ctx.request.body
-    if (!req.account || !req.password) {
+    if (!req.username || !req.password) {
       return ctx.body = {
         status: 0,
         msg: '用户名或密码不能为空'
       }
     } else {
-      const data = await usersModule.getUserPwd(req.account)
+      const data = await usersModule.getUserPwd(req.username)
 
       if (data) {
         if (bcrypt.compareSync(req.password, data.password)) {
           //生成token，验证登录有效期
           const token = jwt.sign({
-            user: req.account,
+            user: req.username,
             password: req.password
           }, global.koajwtStr, {expiresIn: expireTime})
           return ctx.body = {

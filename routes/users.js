@@ -14,7 +14,4 @@ router.post('/login', usersController.login)
 //获取用户信息
 router.post('/getUserInfo', usersController.getUserInfo)
 
-//检测登录状态
-router.post('/checkLogin', usersController.checkLogin)
-
 export default router

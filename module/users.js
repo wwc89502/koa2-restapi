@@ -8,10 +8,10 @@ export default (sequelize, DataTypes) => {
         allowNull: true,
         autoIncrement: true
       },
-      account: {
+      username: {
         type: DataTypes.STRING,
         allowNull: false,
-        field: 'account'
+        field: 'username'
       },
       password: {
         type: DataTypes.STRING,

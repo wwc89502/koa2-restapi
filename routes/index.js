@@ -161,9 +161,9 @@ router.get('/', ctx => {
     User: [
       {
         desc: '获取用户信息',
-        path: url + '/getUserInfo',
+        path: url + '/user/getUserInfo',
         type: 'post',
-        example: url + '/getUserInfo'
+        example: url + '/user/getUserInfo'
       },
       {
         desc: '注册',
@@ -173,7 +173,7 @@ router.get('/', ctx => {
         params: {
           password: '密码',
           email: '邮箱',
-          account: '账号'
+          username: '账号'
         }
       },
       {
@@ -183,7 +183,7 @@ router.get('/', ctx => {
         example: url + '/user/login',
         params: {
           password: '密码',
-          account: '账号 || 邮箱'
+          username: '账号 || 邮箱'
         }
       }
     ],
