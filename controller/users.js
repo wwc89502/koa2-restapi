@@ -67,21 +67,41 @@ export default class usersController {
   }
 
   static async getUserInfo (ctx) {
+    const req = ctx.request.body
     const token = ctx.headers.authorization
 
-    try {
-      const result = await verToken(token)
-      const data = await usersModule.getUserInfo(result.user)
-      return ctx.body = {
-        status: 1,
-        userInfo: data,
-        msg: '获取用户信息成功'
+    if (token) {
+      try {
+        const result = await verToken(token)
+
+        if (!req.account) {
+          return ctx.body = {
+            status: 0,
+            msg: '参数错误'
+          }
+        } else {
+          const data = await usersModule.getUserInfo(req.account)
+
+          if (req.account == data.account) {
+            return ctx.body = {
+              status: 1,
+              userInfo: data,
+              msg: '获取用户信息成功'
+            }
+          }
+        }
+      } catch (error) {
+        ctx.status = 401
+        return ctx.body = {
+          status: 0,
+          msg: error.message
+        }
       }
-    } catch (error) {
+    } else {
       ctx.status = 401
       return ctx.body = {
         status: 0,
-        msg: error.message
+        msg: '登录过期，请重新登陆'
       }
     }
   }
@@ -138,6 +158,7 @@ export default class usersController {
       }
     } else {
       const data = await usersModule.getUserPwd(req.account)
+
 
       if (data) {
         if (bcrypt.compareSync(req.password, data.password)) {
