@@ -113,6 +113,7 @@ export default class articleController {
     const data = await articleModule.getList(post_status, startPage, num, cate_id)
 
     ctx.body = {
+      status: 1,
       totalPages: totalPages,
       total: total,
       currentPage: currentPage,

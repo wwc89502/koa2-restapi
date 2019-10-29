@@ -15,7 +15,7 @@ class articleCateModule {
   static async getList () {
     return await articleCate.findAll({
       order: [
-        ['cate_id', 'DESC']
+        ['cate_id']
       ]
     })
   }
@@ -61,7 +61,8 @@ export default class articleCateController {
     const data = await articleCateModule.getList()
 
     ctx.body = {
-      data
+      data,
+      status: 1
     }
   }
 
@@ -87,7 +88,7 @@ export default class articleCateController {
     let obj = {
       cate_title: req.cate_title || ''
     }
-    const res = await articleCateModule.createCate(obj)
+    const res = await articleCateModule.create(obj)
     if (res) {
       ctx.body = {
         status: 1,

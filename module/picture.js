@@ -51,7 +51,7 @@ export default (sequelize, DataTypes) => {
         autoIncrement: false
       },
       comment_status: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.BOOLEAN,
         primaryKey: false,
         allowNull: false,
         autoIncrement: false
