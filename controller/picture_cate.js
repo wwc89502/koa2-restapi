@@ -61,7 +61,8 @@ export default class pictureCateController {
     const data = await pictureCateModule.getList()
 
     ctx.body = {
-      data
+      data,
+      status: 1
     }
   }
 
@@ -87,7 +88,7 @@ export default class pictureCateController {
     let obj = {
       cate_title: req.cate_title || ''
     }
-    const res = await pictureCateModule.createCate(obj)
+    const res = await pictureCateModule.create(obj)
     if (res) {
       ctx.body = {
         status: 1,

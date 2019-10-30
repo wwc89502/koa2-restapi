@@ -26,8 +26,8 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: false
       },
-      upload_id: {
-        type: DataTypes.STRING(20),
+      upload_url: {
+        type: DataTypes.TEXT,
         primaryKey: false,
         allowNull: false,
         autoIncrement: false

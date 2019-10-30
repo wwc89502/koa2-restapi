@@ -7,7 +7,6 @@
 <body>
 <!--<input type="file" multiple name="file" id="file">-->
 <input type="file" name="file" id="file">
-<button id="btn">上传</button>
 <script src="https://cdn.bootcss.com/babel-standalone/6.26.0/babel.min.js"></script>
 <script src="https://cdn.bootcss.com/babel-polyfill/7.6.0/polyfill.min.js"></script>
 <script src="https://cdn.bootcss.com/axios/0.19.0/axios.js"></script>
@@ -29,7 +28,7 @@
       var file = e.target.files[0]
       formData.append('file', file)
 
-      axios.post('/uploadfile', formData, configs)
+      axios.post('/putFile', formData, configs)
         .then(res => {
           console.log(res.data)
         })

@@ -53,7 +53,7 @@ class pictureModule {
     })
   }
 
-  static async create ({cate_id, show_status, pic_title, upload_id, pic_content, comment_status}) {
+  static async create ({cate_id, show_status, pic_title, upload_url, pic_content, comment_status}) {
     return await picture.create({
       created_date: getTime(),
       pic_content,
@@ -62,7 +62,7 @@ class pictureModule {
       comment_status,
       modified_date: getTime(),
       cate_id,
-      upload_id,
+      upload_url,
       comment_count: 0
     })
   }
@@ -75,7 +75,7 @@ class pictureModule {
     })
   }
 
-  static async update (id, {cate_id, show_status, pic_title, upload_id, pic_content, comment_status}) {
+  static async update (id, {cate_id, show_status, pic_title, upload_url, pic_content, comment_status}) {
     return await picture.update({
       pic_content,
       pic_title,
@@ -83,7 +83,7 @@ class pictureModule {
       comment_status,
       modified_date: getTime(),
       cate_id,
-      upload_id,
+      upload_url,
     }, {
       where: {
         id
@@ -119,7 +119,8 @@ export default class pictureController {
       total: total,
       currentPage: currentPage,
       num: num,
-      list: data
+      list: data,
+      status: 1
     }
   }
 
@@ -146,7 +147,7 @@ export default class pictureController {
       cate_id: req.cate_id || 0,
       pic_content: req.pic_content || '',
       pic_title: req.pic_title || '',
-      upload_id: req.upload_id || '',
+      upload_url: req.upload_url || '',
       show_status: req.show_status || 1,
       comment_status: req.comment_status || 'open'
     }
@@ -176,7 +177,7 @@ export default class pictureController {
         cate_id: req.cate_id || 0,
         pic_content: req.pic_content || '',
         pic_title: req.pic_title || '',
-        upload_id: req.upload_id || '',
+        upload_url: req.upload_url || '',
         show_status: req.show_status || 1,
         comment_status: req.comment_status || 'open'
       }
