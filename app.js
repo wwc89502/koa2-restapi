@@ -43,7 +43,8 @@ app
       /^\/api\/user\/resiger/,
       /^\/api\/user\/login/,
       /^\/api\/user\/getUserInfo/,
-      /^\/api\/putFile/
+      /^\/api\/putFile/,
+      // /^\/api\/uploadfile/
     ],
     method: 'GET'
   }))

@@ -5,7 +5,7 @@ const Op = Sequelize.Op
 const sequelize = new Sequelize('my_blog', 'root', 'hjf8023HG', {
   host: '47.96.138.122',
   operatorsAliases: false,
-  timezone: 'Asia/Shanghai',  //东八时区
+  timezone: '+08:00',  //东八时区
   dialect: 'mariadb',
   dialectOptions: {connectTimeout: 1000}, // mariadb 连接参数
   define: {

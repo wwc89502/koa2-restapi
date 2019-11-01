@@ -1,6 +1,7 @@
 import Router from 'koa-router'
 import uploadController from '../controller/upload'
 import uploadUpyunController from '../controller/upload-upyun'
+import uploadQiniuController from '../controller/upload-qiniu'
 
 const router = new Router({
   prefix: '/api'
@@ -13,11 +14,10 @@ router.post('/uploadfile', uploadController.uploadfile)
 router.post('/uploadfiles', uploadController.uploadfiles)
 
 // 上传单个文件（Upyun）
-router.post('/putFile', uploadUpyunController.putFile)
-router.get('/getFile', uploadUpyunController.getFile)
+// router.post('/putFile', uploadUpyunController.putFile)
 
+// 上传单个文件（qiniu）
+router.post('/putFile', uploadQiniuController.putFile)
 
-// 上传单个文件（Upyun）
-// router.get('/putFile', uploadUpyunController.putFile)
 
 export default router

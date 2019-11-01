@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export default (sequelize, DataTypes) => {
   return sequelize.define(
     'dblog_users',
@@ -31,7 +33,10 @@ export default (sequelize, DataTypes) => {
       registered_time: {
         type: DataTypes.DATE,
         allowNull: false,
-        field: 'registered_time'
+        field: 'registered_time',
+        get() {
+          return moment(this.getDataValue('registered_time')).format('YYYY-MM-DD HH:mm:ss');
+        }
       }
     }
   )

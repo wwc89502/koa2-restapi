@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export default (sequelize, DataTypes) => {
   return sequelize.define(
     'dblog_picture',
@@ -9,7 +11,7 @@ export default (sequelize, DataTypes) => {
         autoIncrement: true
       },
       cate_id: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.BIGINT(20),
         primaryKey: false,
         allowNull: false,
         autoIncrement: false
@@ -36,13 +38,19 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         primaryKey: false,
         allowNull: false,
-        autoIncrement: false
+        autoIncrement: false,
+        get() {
+          return moment(this.getDataValue('created_date')).format('YYYY-MM-DD HH:mm:ss');
+        }
       },
       modified_date: {
         type: DataTypes.DATE,
         primaryKey: false,
         allowNull: false,
-        autoIncrement: false
+        autoIncrement: false,
+        get() {
+          return moment(this.getDataValue('modified_date')).format('YYYY-MM-DD HH:mm:ss');
+        }
       },
       pic_content: {
         type: DataTypes.TEXT('long'),

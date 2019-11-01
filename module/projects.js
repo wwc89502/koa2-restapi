@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export default (sequelize, DataTypes) => {
   return sequelize.define(
     'dblog_projects',
@@ -48,7 +50,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         primaryKey: false,
         allowNull: false,
-        autoIncrement: false
+        autoIncrement: false,
+        get() {
+          return moment(this.getDataValue('complete_time')).format('YYYY-MM-DD HH:mm:ss');
+        }
       },
       isShow: {
         type: DataTypes.BOOLEAN,

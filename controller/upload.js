@@ -53,7 +53,7 @@ export default class uploadController {
       status: 1,
       msg: '上传成功',
       data: {
-        url: filePath,
+        url: 'http://127.0.0.1' + filePath,
         cate: isImg ? 'image' : 'file'
       }
     }
