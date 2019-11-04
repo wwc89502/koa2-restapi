@@ -20,6 +20,14 @@ class projectsModule {
     })
   }
 
+  static async getDetail (id) {
+    return await projects.findOne({
+      where: {
+        id
+      }
+    })
+  }
+
   static async create ({title, name, desc, technology, viewAddress, codeAddress, complete_time, isShow}) {
     return await projects.create({
       title,
@@ -63,12 +71,19 @@ export default class projectsController {
   static async getList (ctx) {
     let data = await projectsModule.getList()
 
-    data.forEach(item => {
-      item['dataValues'].technology = item['dataValues'].technology.split(',')
-    })
+    ctx.body = {
+      data,
+      status: 1
+    }
+  }
+
+  static async getDetail (ctx) {
+    const params = ctx.params
+    const data = await projectsModule.getDetail(Number(params.id))
 
     ctx.body = {
-      data
+      data,
+      status: 1
     }
   }
 
@@ -111,7 +126,7 @@ export default class projectsController {
       viewAddress: req.viewAddress || '',
       codeAddress: req.codeAddress || '',
       complete_time: req.complete_time || getTime(),
-      isShow: req.isShow || 1,
+      isShow: req.isShow,
     }
 
     const res = await projectsModule.update(Number(params.id), obj)

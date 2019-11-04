@@ -30,6 +30,11 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         field: 'nicename'
       },
+      avatar: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'avatar'
+      },
       registered_time: {
         type: DataTypes.DATE,
         allowNull: false,

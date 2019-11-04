@@ -48,6 +48,29 @@ class usersModule {
       registered_time: getTime()
     })
   }
+
+  static async setUserInfo ({nicename, email, avatar}, username) {
+    console.log({nicename, email, avatar}, username)
+    return await users.update({
+      nicename,
+      email,
+      avatar
+    }, {
+      where: {
+      [Op.or]: [{username: username}]
+    }
+    })
+  }
+
+  static async setPwd (password, username) {
+    return await users.update({
+      password
+    }, {
+      where: {
+        [Op.or]: [{username: username}]
+      }
+    })
+  }
 }
 
 export default class usersController {
@@ -61,6 +84,87 @@ export default class usersController {
         status: 1,
         userInfo: data,
         msg: '获取用户信息成功'
+      }
+    } catch (error) {
+      ctx.status = 401
+      return ctx.body = {
+        status: 0,
+        msg: error.message
+      }
+    }
+  }
+
+  static async setUserInfo (ctx) {
+    const token = ctx.headers.authorization
+    const req = ctx.request.body
+
+    try {
+      const result = await verToken(token)
+      const data = await usersModule.getUserInfo(result.user)
+
+      if (data) {
+        const param = {
+          email: req.email,
+          nicename: req.nicename,
+          avatar: req.avatar
+        }
+        const res = await usersModule.setUserInfo(param, data.username)
+
+        if (res) {
+          ctx.response.status = 200
+          ctx.body = {
+            status: 1,
+            msg: '修改成功'
+          }
+        }
+
+      } else {
+        return ctx.body = {
+          status: 0,
+          msg: '该用户尚未注册'
+        }
+      }
+    } catch (error) {
+      ctx.status = 401
+      return ctx.body = {
+        status: 0,
+        msg: error.message
+      }
+    }
+  }
+
+  static async setPwd (ctx) {
+    const token = ctx.headers.authorization
+    const req = ctx.request.body
+
+    try {
+      const result = await verToken(token)
+      const data = await usersModule.getUserInfo(result.user)
+
+      if (data) {
+        const info = await usersModule.getUserPwd(data.username)
+        if (bcrypt.compareSync(req.oPwd, info.password)) {
+          const hash = bcrypt.hashSync(req.newPwd, 10)
+
+          const res = await usersModule.setPwd(hash, data.username)
+          if (res) {
+            ctx.response.status = 200
+            ctx.body = {
+              status: 1,
+              msg: '密码修改成功'
+            }
+          }
+        } else {
+          return ctx.body = {
+            status: 0,
+            msg: '用户密码错误'
+          }
+        }
+      } else {
+        return ctx.body = {
+          status: 0,
+          msg: '该用户尚未注册'
+        }
       }
     } catch (error) {
       ctx.status = 401

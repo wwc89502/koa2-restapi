@@ -8,6 +8,9 @@ const router = new Router({
 // 项目列表
 router.get('/', projectsController.getList)
 
+// 项目详情
+router.get('/:id', projectsController.getDetail)
+
 // 项目创建
 router.post('/', projectsController.create)
 

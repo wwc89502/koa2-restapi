@@ -51,8 +51,8 @@ export default (sequelize, DataTypes) => {
         primaryKey: false,
         allowNull: false,
         autoIncrement: false,
-        get() {
-          return moment(this.getDataValue('complete_time')).format('YYYY-MM-DD HH:mm:ss');
+        get () {
+          return moment(this.getDataValue('complete_time')).format('YYYY-MM-DD')
         }
       },
       isShow: {
