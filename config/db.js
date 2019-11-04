@@ -8,8 +8,10 @@ const sequelize = new Sequelize('my_blog', 'root', 'hjf8023HG', {
   timezone: '+08:00',  //东八时区
   dialect: 'mariadb',
   dialectOptions: {connectTimeout: 1000}, // mariadb 连接参数
-  define: {
-    timestamps: false
+  pool: {
+    max: 10,
+    min: 0,
+    idle: 10000
   }
 })
 

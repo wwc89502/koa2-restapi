@@ -6,7 +6,7 @@ const Sequelize = DB.sequelize
 //引入数据表模型
 const article = Sequelize.import('../module/article')
 //自动创建表
-article.sync({force: false})
+article.sync({force: true})
 
 import { getTime } from '../tools'
 
