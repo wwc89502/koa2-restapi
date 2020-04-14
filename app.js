@@ -11,6 +11,7 @@ import PictureCate from './routes/picture_cate'
 import Users from './routes/users'
 import Projects from './routes/projects'
 import Upload from './routes/upload'
+import Other from './routes/other'
 
 const app = new Koa()
 
@@ -56,6 +57,7 @@ app
   .use(Users.routes(), Users.allowedMethods())
   .use(Projects.routes(), Projects.allowedMethods())
   .use(Upload.routes(), Upload.allowedMethods())
+  .use(Other.routes(), Other.allowedMethods())
 
 app.listen(80, () => {
   console.log('app listen at 80')
