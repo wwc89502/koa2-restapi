@@ -7,7 +7,7 @@ const Sequelize = DB.sequelize
 //引入数据表模型
 const users = Sequelize.import('../module/users')
 //自动创建表
-users.sync({force: false})
+users.sync({force: true})
 
 const Op = DB.Op
 
@@ -39,7 +39,7 @@ class usersModule {
     })
   }
 
-  static async resiger ({nicename, email, account, password}) {
+  static async register ({nicename, email, account, password}) {
     return await users.create({
       nicename,
       email,
@@ -91,7 +91,8 @@ export default class usersController {
     }
   }
 
-  static async resiger (ctx) {
+  static async register (ctx) {
+
     const req = ctx.request.body
 
     if (req.account && req.email && req.password) {
@@ -111,7 +112,7 @@ export default class usersController {
             account: req.account,
             nicename: req.account
           }
-          const data = await usersModule.resiger(param)
+          const data = await usersModule.register(param)
 
           ctx.response.status = 200
           ctx.body = {
@@ -124,7 +125,6 @@ export default class usersController {
         }
 
       } catch (error) {
-        console.log(error)
         ctx.response.status = 416
         ctx.body = {
           status: 0,

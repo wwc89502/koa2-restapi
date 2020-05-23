@@ -6,7 +6,7 @@ const router = new Router({
 })
 
 //用户注册
-router.post('/resiger', usersController.resiger)
+router.post('/register', usersController.register)
 
 //密码登陆
 router.post('/login', usersController.login)

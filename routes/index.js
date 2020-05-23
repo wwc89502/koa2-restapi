@@ -166,9 +166,9 @@ router.get('/', ctx => {
       },
       {
         desc: '注册',
-        path: url + '/user/resiger',
+        path: url + '/user/register',
         type: 'post',
-        example: url + '/user/resiger',
+        example: url + '/user/register',
         params: {
           account: '账号',
           email: '电子邮件',

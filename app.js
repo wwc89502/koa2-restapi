@@ -30,10 +30,10 @@ app
     secret: global.koajwtStr
   }).unless({
     path: [
-      /^\/api\/user\/resiger/,
       /^\/api\/user\/login/,
-      /^\/api\/uploadfile/,
-      /^\/api\/uploadfiles/,
+      /^\/api\/user\/register/
+      // /^\/api\/uploadfile/,
+      // /^\/api\/uploadfiles/,
     ],
     method: 'GET'
   }))
@@ -46,6 +46,6 @@ app
   .use(Projects.routes(), Projects.allowedMethods())
   .use(Upload.routes(), Upload.allowedMethods())
 
-app.listen(80, () => {
-  console.log('app listen at 80')
+app.listen(801, () => {
+  console.log('app listen at 801')
 })
