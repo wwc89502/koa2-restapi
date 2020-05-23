@@ -168,13 +168,22 @@ router.get('/', ctx => {
         desc: '注册',
         path: url + '/user/resiger',
         type: 'post',
-        example: url + '/user/resiger'
+        example: url + '/user/resiger',
+        params: {
+          account: '账号',
+          email: '电子邮件',
+          password: '密码'
+        }
       },
       {
         desc: '登录',
         path: url + '/user/login',
         type: 'post',
-        example: url + '/user/login'
+        example: url + '/user/login',
+        params: {
+          account: '账号/电子邮件',
+          password: '密码'
+        }
       }
     ]
   }
